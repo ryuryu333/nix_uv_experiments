@@ -20,21 +20,21 @@
           python = nixpkgs-python.packages.${system}.${my_python_version};
 
           # パターン1：cargo を用いてビルド
-          uv = pkgs.rustPlatform.buildRustPackage (finalAttrs: {
-            pname = "uv";
-            version = "0.9.8";
-            src = pkgs.fetchFromGitHub {
-              owner = "astral-sh";
-              repo = "uv";
-              tag = finalAttrs.version;
-              # hash = lib.fakeHash;
-              hash = "sha256-e7yvEQggfBLq4akqnVoZTfvcpZLlbQRWr2fruGfF/N4=";
-            };
-            # cargoHash = lib.fakeHash;
-            cargoHash = "sha256-lEGhXwzotvCuDAvVyrt22e/ReotWT7m1lt6d2GL8lFU=";
-            doCheck = false;
-            cargoBuildFlags = [ "--package" "uv" ];
-          });
+          # uv = pkgs.rustPlatform.buildRustPackage (finalAttrs: {
+          #   pname = "uv";
+          #   version = "0.9.8";
+          #   src = pkgs.fetchFromGitHub {
+          #     owner = "astral-sh";
+          #     repo = "uv";
+          #     tag = finalAttrs.version;
+          #     # hash = lib.fakeHash;
+          #     hash = "sha256-e7yvEQggfBLq4akqnVoZTfvcpZLlbQRWr2fruGfF/N4=";
+          #   };
+          #   # cargoHash = lib.fakeHash;
+          #   cargoHash = "sha256-lEGhXwzotvCuDAvVyrt22e/ReotWT7m1lt6d2GL8lFU=";
+          #   doCheck = false;
+          #   cargoBuildFlags = [ "--package" "uv" ];
+          # });
 
           # パターン2：Github release からバイナリを取得
           uv = pkgs.stdenv.mkDerivation (finalAttrs: {
