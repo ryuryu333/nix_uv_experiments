@@ -12,7 +12,6 @@
       let
         my_python_version = "3.12.12";
         my_uv_version = "0.9.8";
-        #pkgs = nixpkgs.legacyPackages.${system};
         pkgs = import nixpkgs {
           inherit system;
           config.allowUnfreePredicate =
@@ -51,6 +50,7 @@
           # });
 
           # パターン2：Github release からバイナリを取得
+          # バージョンが変わるたびに hash を更新する必要がある
           uv = pkgs.stdenv.mkDerivation (finalAttrs: {
             pname = "uv";
             version = my_uv_version;
@@ -63,7 +63,7 @@
               # 他のプラットフォーム用のURLとハッシュをここに追加
               # 初回のみ nix develop した後、エラーが出るので、以下の部分を探して hash を書き換える
               # specified: sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=
-              # got:    sha256-0iyRn6x5I1KRejoT/OrC/jaQLkFEK50+OCG/un4x36g=
+              # got: sha256-0iyRn6x5I1KRejoT/OrC/jaQLkFEK50+OCG/un4x36g=
               else if system == "aarch64-darwin" then
                 pkgs.fetchzip {
                   url  = "";
@@ -89,6 +89,7 @@
           shellHook = ''
             export UV_PYTHON=${my_python_version}
             export UV_PYTHON_DOWNLOADS=never
+            export LD_LIBRARY_PATH=/usr/lib/wsl/lib:$LD_LIBRARY_PATH
           '';
         };
       });
