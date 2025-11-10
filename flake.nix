@@ -12,7 +12,21 @@
       let
         my_python_version = "3.12.12";
         my_uv_version = "0.9.8";
-        pkgs = nixpkgs.legacyPackages.${system};
+        #pkgs = nixpkgs.legacyPackages.${system};
+        pkgs = import nixpkgs {
+          inherit system;
+          config.allowUnfreePredicate =
+            pkg:
+            builtins.elem (lib.getName pkg) [
+              "ollama-cuda"
+              # ollama-cuda 依存
+              "cuda_cudart"
+              "cuda_nvcc"
+              "cuda_cccl"
+              "libcublas"
+            ];
+        };
+
         lib = pkgs.lib;
       in rec
       {
@@ -68,6 +82,9 @@
           packages = [
             packages.python
             packages.uv
+            # pkgs.ollama # for CPU only
+            # pkgs.ollama-rocm # for AMD GPU
+            pkgs.ollama-cuda # for NVIDIA GPU
           ];
           shellHook = ''
             export UV_PYTHON=${my_python_version}
