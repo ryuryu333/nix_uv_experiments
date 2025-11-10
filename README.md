@@ -33,7 +33,7 @@ ollama のモデルを準備する。
 9.3GB のモデルなので、GPU RAM 12 GB or RAM 32 GB なら動くはず。
 （src/local_agent.py にて model_name: str = "qwen3:14b" とモデル名を指定しています。）
 
-```
+```bash
 ollama pull qwen3:14b
 ```
 
